@@ -56,37 +56,29 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
 
-          # 2. Git 라이브러리 (필터링 우회용 문자열 결합 방식)
-          # 주소를 조각내어 변수로 선언한 뒤 합쳐서 필터를 피합니다.
-          S="https:/"
-          G="/github.com/"
+          # 2. Git 라이브러리 (인증 토큰을 삽입하여 Username 요구 차단)
+          # GITHUB_TOKEN을 주소에 포함하면 비밀번호를 묻지 않습니다.
+          TOKEN_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com"
 
-          # FlxAnimate
-          URL_FLX="${S}${G}dotware64/FlxAnimate.git"
-          git clone --depth 1 --branch 1.2.0 "$URL_FLX" /home/runner/haxelib/flxanimate
+          git clone --depth 1 --branch 1.2.0 "${TOKEN_URL}/dotware64/FlxAnimate.git" /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # Android Tools
-          URL_AT="${S}${G}MAJigsaw77/extension-androidtools.git"
-          git clone --depth 1 "$URL_AT" /home/runner/haxelib/ext_at
+          git clone --depth 1 "${TOKEN_URL}/MAJigsaw77/extension-androidtools.git" /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
-          # Discord RPC
-          URL_RPC="${S}${G}MAJigsaw77/hxdiscord_rpc.git"
-          git clone --depth 1 "$URL_RPC" /home/runner/haxelib/hxdiscord_rpc
+          git clone --depth 1 "${TOKEN_URL}/MAJigsaw77/hxdiscord_rpc.git" /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
-          # 나머지 라이브러리들
-          git clone --depth 1 "${S}${G}superpowers04/linc_luajit.git" /home/runner/haxelib/linc_luajit
+          git clone --depth 1 "${TOKEN_URL}/superpowers04/linc_luajit.git" /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
 
-          git clone --depth 1 "${S}${G}HaxeExtension/extension-orientation.git" /home/runner/haxelib/ext_or
+          git clone --depth 1 "${TOKEN_URL}/HaxeExtension/extension-orientation.git" /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
 
-          git clone --depth 1 "${S}${G}beihu235/AndroidDialogs.git" /home/runner/haxelib/androiddialogs
+          git clone --depth 1 "${TOKEN_URL}/beihu235/AndroidDialogs.git" /home/runner/haxelib/androiddialogs
           haxelib dev androiddialogs /home/runner/haxelib/androiddialogs
 
-          git clone --depth 1 "${S}${G}beihu235/devicelanguage.git" /home/runner/haxelib/devicelanguage
+          git clone --depth 1 "${TOKEN_URL}/beihu235/devicelanguage.git" /home/runner/haxelib/devicelanguage
           haxelib dev devicelanguage /home/runner/haxelib/devicelanguage
 
           haxelib list
