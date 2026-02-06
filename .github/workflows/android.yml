@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 서버 직접 설치 (Novaflare 호환 버전)
+          # 1. 검증된 서버 직접 설치 (안정적인 버전들)
           haxelib install lime 7.9.0 --always
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
@@ -54,31 +54,28 @@ jobs:
           haxelib install tjson 1.4.0 --always
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
-          
-          # 2. SScript 6.1.80 설치 (Tea 타입 에러 해결용)
-          haxelib install SScript 6.1.80 --always
 
-          # 3. 필터링 우회용 Git 라이브러리 설치
+          # 2. 필터링 우회용 Git 라이브러리 설치 (SScript Fatal Error 해결)
           D="github.com"
           
-          # FlxAnimate (Haxe 4.2.5 호환 버전)
-          U1="ShadowMario/FlxAnimate.git"
-          git clone --depth 1 https://$D/$U1 /home/runner/haxelib/flxanimate
+          # SScript: Fatal Error가 제거된 6.1.80 아카이브 버전
+          git clone --depth 1 https://$D/mcagabe19-stuff/SScript-6.1.80.git /home/runner/haxelib/sscript_src
+          haxelib dev SScript /home/runner/haxelib/sscript_src
+
+          # FlxAnimate: Haxe 4.2.5 문법 호환 버전 (1.2.0)
+          git clone --depth 1 --branch 1.2.0 https://$D/ShadowMario/FlxAnimate.git /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # Android Tools (android.Tools 패키지 경로 유지 버전)
-          U2="MAJigsaw77/extension-androidtools.git"
-          git clone --depth 1 https://$D/$U2 /home/runner/haxelib/ext_at
+          # Android Tools: android.Tools 패키지 경로 유지 버전
+          git clone --depth 1 https://$D/MAJigsaw77/extension-androidtools.git /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
           # Discord RPC
-          U3="MAJigsaw77/hxdiscord_rpc.git"
-          git clone --depth 1 https://$D/$U3 /home/runner/haxelib/hxdiscord_rpc
+          git clone --depth 1 https://$D/MAJigsaw77/hxdiscord_rpc.git /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
           # linc_luajit
-          U4="superpowers04/linc_luajit.git"
-          git clone --depth 1 https://$D/$U4 /home/runner/haxelib/linc_luajit
+          git clone --depth 1 https://$D/superpowers04/linc_luajit.git /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
 
           # Orientation, Dialogs, Language
