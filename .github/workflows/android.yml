@@ -41,20 +41,19 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
-          
-          # Lime 7.9.0 태그로 직접 클론 (브랜치 대신 태그 명시)
-          LIME_REPO="https://github.com/haxelime/lime.git"
-          echo "Cloning Lime 7.9.0 from: ${LIME_REPO}"
-          git clone --depth 1 --tags https://github.com/haxelime/lime.git /home/runner/haxelib/lime_src
-          cd /home/runner/haxelib/lime_src && git checkout tags/7.9.0 && cd /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}
+
+          # Lime 7.9.0 설치 (전체 클론 후 태그 전환)
+          git clone https://github.com/haxelime/lime.git /home/runner/haxelib/lime_src
+          cd /home/runner/haxelib/lime_src
+          git checkout 7.9.0
+          cd ${{ github.workspace }}
           haxelib dev lime /home/runner/haxelib/lime_src
-          
-          # SScript 아카이브
-          SSCRIPT_REPO="https://github.com"
-          git clone --depth 1 "${SSCRIPT_REPO}" /home/runner/haxelib/sscript_src
+
+          # SScript 아카이브 (주소 잘림 방지를 위해 변수 없이 한 줄로 실행)
+          git clone https://github.com /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
-          # 나머지 라이브러리 설치 (안정적인 버전들)
+          # 필수 라이브러리 설치
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.6.2 --always
           haxelib install flixel-tools 1.5.1 --always
@@ -66,8 +65,8 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
-          
-          # 기타 Git 라이브러리 (haxelib git 명령어로 복구)
+
+          # Git 라이브러리들 (전체 주소 직접 사용)
           haxelib git hxdiscord_rpc https://github.com
           haxelib git flxanimate https://github.com
           haxelib git linc_luajit https://github.com
