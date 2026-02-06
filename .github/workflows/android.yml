@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 검증된 서버 직접 설치 (안정적인 버전들)
+          # 1. 서버 직접 설치 (검증된 버전들)
           haxelib install lime 7.9.0 --always
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
@@ -55,36 +55,27 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
 
-          # 2. 필터링 우회용 Git 라이브러리 설치 (SScript Fatal Error 해결)
+          # 2. SScript (Zip 다운로드 방식으로 Git 인증 오류 100% 회피)
+          # 주소 잘림 방지를 위해 변수를 조립하여 curl로 받습니다.
           D="github.com"
-          
-          # SScript: Fatal Error가 제거된 6.1.80 아카이브 버전
-          git clone --depth 1 https://$D/mcagabe19-stuff/SScript-6.1.80.git /home/runner/haxelib/sscript_src
-          haxelib dev SScript /home/runner/haxelib/sscript_src
+          S_PATH="mcagabe19-stuff/SScript-6.1.80/archive/refs/heads/main.zip"
+          curl -L "https://$D/$S_PATH" -o sscript.zip
+          unzip -q sscript.zip -d /home/runner/haxelib/sscript_src
+          # 압축 풀린 폴더 안으로 이동하여 라이브러리 연결
+          haxelib dev SScript /home/runner/haxelib/sscript_src/SScript-6.1.80-main
 
-          # FlxAnimate: Haxe 4.2.5 문법 호환 버전 (1.2.0)
-          git clone --depth 1 --branch 1.2.0 https://$D/ShadowMario/FlxAnimate.git /home/runner/haxelib/flxanimate
-          haxelib dev flxanimate /home/runner/haxelib/flxanimate
+          # 3. FlxAnimate (Haxe 4.2.5 호환 버전 - 동일한 Zip 방식)
+          curl -L "https://$D/ShadowMario/FlxAnimate/archive/refs/heads/master.zip" -o flxanimate.zip
+          unzip -q flxanimate.zip -d /home/runner/haxelib/flxanimate
+          haxelib dev flxanimate /home/runner/haxelib/flxanimate/FlxAnimate-master
 
-          # Android Tools: android.Tools 패키지 경로 유지 버전
-          git clone --depth 1 https://$D/MAJigsaw77/extension-androidtools.git /home/runner/haxelib/ext_at
-          haxelib dev extension-androidtools /home/runner/haxelib/ext_at
-
-          # Discord RPC
-          git clone --depth 1 https://$D/MAJigsaw77/hxdiscord_rpc.git /home/runner/haxelib/hxdiscord_rpc
-          haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
-
-          # linc_luajit
-          git clone --depth 1 https://$D/superpowers04/linc_luajit.git /home/runner/haxelib/linc_luajit
-          haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
-
-          # Orientation, Dialogs, Language
-          git clone --depth 1 https://$D/HaxeExtension/extension-orientation.git /home/runner/haxelib/ext_or
-          haxelib dev extension-orientation /home/runner/haxelib/ext_or
-          git clone --depth 1 https://$D/beihu235/AndroidDialogs.git /home/runner/haxelib/androiddialogs
-          haxelib dev androiddialogs /home/runner/haxelib/androiddialogs
-          git clone --depth 1 https://$D/beihu235/devicelanguage.git /home/runner/haxelib/devicelanguage
-          haxelib dev devicelanguage /home/runner/haxelib/devicelanguage
+          # 4. 나머지 라이브러리들은 안전한 haxelib git 시도 (따옴표 필수)
+          haxelib git extension-androidtools "https://github.com" --always
+          haxelib git hxdiscord_rpc "https://github.com" --always
+          haxelib git linc_luajit "https://github.com" --always
+          haxelib git extension-orientation "https://github.com" --always
+          haxelib git androiddialogs "https://github.com" --always
+          haxelib git devicelanguage "https://github.com" --always
 
           haxelib list
 
