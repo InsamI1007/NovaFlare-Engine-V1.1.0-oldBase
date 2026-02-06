@@ -38,7 +38,7 @@ jobs:
         with:
           haxe-version: 4.2.5
 
-            - name: Install Haxelib
+      - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
 
