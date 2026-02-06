@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 핵심 엔진 라이브러리 (검증된 서버 설치)
+          # 1. 서버 직접 설치 (검증됨)
           haxelib install lime 7.9.0 --always
           haxelib install SScript 3.0.0 --always
           haxelib install openfl 9.1.0 --always
@@ -57,30 +57,41 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
 
-          # 2. Git 라이브러리 설치
-          # FlxAnimate (GitHub 주소를 직접 사용)
-          git clone --depth 1 --branch 1.2.0 https://github.com /home/runner/haxelib/flxanimate
+          # 2. 모든 Git 라이브러리를 Base64로 숨겨서 클론 (잘림 방지)
+          
+          # FlxAnimate (1.2.0)
+          ANIMATE_B64="aHR0cHM6Ly9naXRodWIuY29tL2RvdHdhcmU2NC9GbHhBbmltYXRlLmdpdA=="
+          git clone --depth 1 --branch 1.2.0 $(echo $ANIMATE_B64 | base64 --decode) /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # Android Tools (GitHub 주소를 직접 사용)
-          git clone --depth 1 https://github.com /home/runner/haxelib/ext_at
+          # Android Tools
+          AT_B64="aHR0cHM6Ly9naXRodWIuY29tL01BSmlnc2F3NzcvZXh0ZW5zaW9uLWFuZHJvaWR0b29scy5naXQ="
+          git clone --depth 1 $(echo $AT_B64 | base64 --decode) /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
-          # 나머지 라이브러리 (변수 조립 방식 유지)
-          GH="https://github.com"
-          git clone --depth 1 "$GH/MAJigsaw77/hxdiscord_rpc.git" /home/runner/haxelib/hxdiscord_rpc
+          # Discord RPC
+          RPC_B64="aHR0cHM6Ly9naXRodWIuY29tL01BSmlnc2F3NzcvaHhkaXNjb3JkX3JwYy5naXQ="
+          git clone --depth 1 $(echo $RPC_B64 | base64 --decode) /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
-          git clone --depth 1 "$GH/superpowers04/linc_luajit.git" /home/runner/haxelib/linc_luajit
+          # linc_luajit
+          LUA_B64="aHR0cHM6Ly9naXRodWIuY29tL3N1cGVycG93ZXJzMDQvbGluY19sdWFqaXQuZ2l0"
+          git clone --depth 1 $(echo $LUA_B64 | base64 --decode) /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
 
-          git clone --depth 1 "$GH/HaxeExtension/extension-orientation.git" /home/runner/haxelib/ext_or
+          # extension-orientation
+          OR_B64="aHR0cHM6Ly9naXRodWIuY29tL0hheGVFeHRlbnNpb24vZXh0ZW5zaW9uLW9yaWVudGF0aW9uLmdpdA=="
+          git clone --depth 1 $(echo $OR_B64 | base64 --decode) /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
 
-          git clone --depth 1 "$GH/beihu235/AndroidDialogs.git" /home/runner/haxelib/androiddialogs
+          # AndroidDialogs
+          AD_B64="aHR0cHM6Ly9naXRodWIuY29tL2JlaWh1MjM1L0FuZHJvaWREaWFsb2dzLmdpdA=="
+          git clone --depth 1 $(echo $AD_B64 | base64 --decode) /home/runner/haxelib/androiddialogs
           haxelib dev androiddialogs /home/runner/haxelib/androiddialogs
 
-          git clone --depth 1 "$GH/beihu235/devicelanguage.git" /home/runner/haxelib/devicelanguage
+          # devicelanguage
+          DL_B64="aHR0cHM6Ly9naXRodWIuY29tL2JlaWh1MjM1L2RldmljZWxhbmd1YWdlLmdpdA=="
+          git clone --depth 1 $(echo $DL_B64 | base64 --decode) /home/runner/haxelib/devicelanguage
           haxelib dev devicelanguage /home/runner/haxelib/devicelanguage
 
           haxelib list
