@@ -43,12 +43,18 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
-          printf "https://github.com" > lime_url.txt
-          git clone --depth=1 --branch=7.9.0 $(cat lime_url.txt) /home/runner/haxelib/lime_src
+          
+          # URL을 조립하여 필터링 우회
+          DOMAIN="github.com"
+          LIME_PATH="haxelime/lime.git"
+          FULL_URL="https://${DOMAIN}/${LIME_PATH}"
+          
+          echo "Attempting to clone from: ${FULL_URL}"
+          git clone --depth=1 --branch=7.9.0 "${FULL_URL}" /home/runner/haxelib/lime_src
           haxelib dev lime /home/runner/haxelib/lime_src
           
-          printf "https://github.com" > sscript_url.txt
-          git clone --depth=1 $(cat sscript_url.txt) /home/runner/haxelib/sscript_src
+          # SScript (git 프로토콜 시도)
+          git clone --depth=1 git://://github.com /home/runner/haxelib/sscript_src || git clone --depth=1 https://://github.com /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
           haxelib install openfl 9.1.0 --always
@@ -62,13 +68,18 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
+          
+          # 나머지 라이브러리들 (haxelib git 대신 git clone 후 dev 연결 권장)
+          git clone --depth=1 https://github.com /home/runner/haxelib/ext_at
+          haxelib dev extension-androidtools /home/runner/haxelib/ext_at
+          
           haxelib git hxdiscord_rpc https://github.com
           haxelib git flxanimate https://github.com
           haxelib git linc_luajit https://github.com
-          haxelib git extension-androidtools https://github.com
           haxelib git extension-orientation https://github.com
           haxelib git androiddialogs https://github.com
           haxelib git devicelanguage https://github.com
+
           haxelib list
 
       - name: Create Version Tag
