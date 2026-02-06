@@ -42,14 +42,12 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # Lime 7.9.0 설치 (전체 클론 후 태그 전환)
-          git clone https://github.com/haxelime/lime.git /home/runner/haxelib/lime_src
-          cd /home/runner/haxelib/lime_src
-          git checkout 7.9.0
-          cd ${{ github.workspace }}
+          # Lime 7.9.0 (커밋 해시로 강제 고정)
+          git clone https://github.com /home/runner/haxelib/lime_src
+          git -C /home/runner/haxelib/lime_src checkout 107d611
           haxelib dev lime /home/runner/haxelib/lime_src
 
-          # SScript 아카이브 (주소 잘림 방지를 위해 변수 없이 한 줄로 실행)
+          # SScript (주소 잘림 방지를 위해 한 줄 실행)
           git clone https://github.com /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
@@ -66,7 +64,7 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
 
-          # Git 라이브러리들 (전체 주소 직접 사용)
+          # Git 라이브러리들
           haxelib git hxdiscord_rpc https://github.com
           haxelib git flxanimate https://github.com
           haxelib git linc_luajit https://github.com
