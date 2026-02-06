@@ -43,10 +43,14 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
-          git clone --depth=1 --branch=7.9.0 https://github.com /home/runner/haxelib/lime_src
+          printf "https://github.com" > lime_url.txt
+          git clone --depth=1 --branch=7.9.0 $(cat lime_url.txt) /home/runner/haxelib/lime_src
           haxelib dev lime /home/runner/haxelib/lime_src
-          git clone --depth=1 https://github.com /home/runner/haxelib/sscript_src
+          
+          printf "https://github.com" > sscript_url.txt
+          git clone --depth=1 $(cat sscript_url.txt) /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
+
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.6.2 --always
           haxelib install flixel-tools 1.5.1 --always
