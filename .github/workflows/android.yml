@@ -52,21 +52,19 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp 4.2.1
+          haxelib install hxcpp > /dev/null
           haxelib install hxcpp-debug-server
-          haxelib install lime 7.9.0
-          haxelib install openfl 9.1.0
+          haxelib git lime https://github.com 7.9.0
+          haxelib git openfl https://github.com 9.1.0
           haxelib install flixel 5.6.2
           haxelib install flixel-tools 1.5.1
           haxelib install flixel-ui 2.5.0
           haxelib install flixel-addons 3.0.2
           haxelib install tjson 1.4.0
           haxelib install hxCodec 2.6.0
-          haxelib install SScript 22.0.2
+          haxelib git SScript https://github.com
           haxelib install hscript 2.5.0
           haxelib install hxCodec 2.6.0
-          haxelib install TeaScript 1.0.1
-
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
           haxelib git flxanimate https://github.com/beihu235/flxanimate
           haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
@@ -74,18 +72,10 @@ jobs:
           haxelib git extension-orientation https://github.com/HaxeExtension/extension-orientation.git
           haxelib git androiddialogs https://github.com/beihu235/AndroidDialogs
           haxelib git devicelanguage https://github.com/beihu235/devicelanguage
-          haxelib list         
-          
-      - name: Install Libraries
-        run: | 
-          haxelib git SScript https://github.com
-          haxelib git lime https://github.com 7.9.0
-          haxelib git openfl https://github.com 9.1.0
-          haxelib git extension-androidtools https://github.com
-          haxelib install hxcpp
           haxelib install lime-samples
           haxelib run lime setup
           haxelib run lime setup android
+          haxelib list         
 
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
