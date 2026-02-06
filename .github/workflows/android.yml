@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 서버 직접 설치 (성공 확인됨)
+          # 1. 서버 직접 설치 (검증된 버전)
           haxelib install lime 7.9.0 --always
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
@@ -55,31 +55,30 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
 
-          # 2. 인증 토큰을 삽입한 Git 설치 (Username 요구 원천 차단)
-          # GITHUB_TOKEN을 주소에 포함하면 깃허브가 '인증된 사용자'로 인식해 비번을 묻지 않습니다.
+          # 2. Git 라이브러리 (주소 오타 및 대소문자 정밀 교정)
           AUTH="x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com"
-          
-          git clone --depth 1 https://$AUTH/mcagabe19-stuff/SScript-6.1.80.git /home/runner/haxelib/sscript_src
+
+          # SScript: mcagabe19-stuff 대신 현재 가장 안정적인 아카이브 주소 사용
+          git clone --depth 1 https://$AUTH/TeeS-Project/SScript.git /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
+          # FlxAnimate: ShadowMario 공식 주소 (대소문자 주의)
           git clone --depth 1 https://$AUTH/ShadowMario/FlxAnimate.git /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
+          # Android Tools: MAJigsaw77 공식 주소
           git clone --depth 1 https://$AUTH/MAJigsaw77/extension-androidtools.git /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
           
+          # 기타 필수
           git clone --depth 1 https://$AUTH/MAJigsaw77/hxdiscord_rpc.git /home/runner/haxelib/hx_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hx_rpc
-
           git clone --depth 1 https://$AUTH/superpowers04/linc_luajit.git /home/runner/haxelib/lua
           haxelib dev linc_luajit /home/runner/haxelib/lua
-
           git clone --depth 1 https://$AUTH/HaxeExtension/extension-orientation.git /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
-
           git clone --depth 1 https://$AUTH/beihu235/AndroidDialogs.git /home/runner/haxelib/ad
           haxelib dev androiddialogs /home/runner/haxelib/ad
-
           git clone --depth 1 https://$AUTH/beihu235/devicelanguage.git /home/runner/haxelib/dl
           haxelib dev devicelanguage /home/runner/haxelib/dl
 
