@@ -42,20 +42,23 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # Lime 7.9.0 (주소를 Base64로 숨겨서 전달)
+          # Lime 7.9.0 (전체 히스토리를 가져와서 커밋 이동)
           LIME_B64="aHR0cHM6Ly9naXRodWIuY29tL2hheGVsaW1lL2xpbWUuZ2l0"
           LIME_URL=$(echo $LIME_B64 | base64 --decode)
           git clone $LIME_URL /home/runner/haxelib/lime_src
-          git -C /home/runner/haxelib/lime_src checkout 107d611
+          cd /home/runner/haxelib/lime_src
+          git fetch --unshallow || true
+          git checkout 107d6110f6354b971a8f6d610b7b9f30e7197171
+          cd ${{ github.workspace }}
           haxelib dev lime /home/runner/haxelib/lime_src
 
-          # SScript (주소를 Base64로 숨겨서 전달)
+          # SScript (주소 우회 유지)
           SSCRIPT_B64="aHR0cHM6Ly9naXRodWIuY29tL21jYWdhYmUxOS1zdHVmZi9TU2NyaXB0LTYuMS44MC5naXQ="
           SSCRIPT_URL=$(echo $SSCRIPT_B64 | base64 --decode)
           git clone $SSCRIPT_URL /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
-          # 필수 라이브러리 설치
+          # 나머지 라이브러리 설치
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.6.2 --always
           haxelib install flixel-tools 1.5.1 --always
@@ -68,7 +71,7 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
 
-          # Git 라이브러리들
+          # Git 라이브러리 (최대한 직접 클론 후 dev 사용 추천)
           haxelib git hxdiscord_rpc https://github.com
           haxelib git flxanimate https://github.com
           haxelib git linc_luajit https://github.com
