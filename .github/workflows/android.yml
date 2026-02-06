@@ -42,9 +42,8 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 서버 직접 설치
+          # 1. 서버 직접 설치 (Novaflare 호환 버전)
           haxelib install lime 7.9.0 --always
-          haxelib install SScript 3.0.0 --always
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
           haxelib install flixel-tools 1.5.1 --always
@@ -55,16 +54,19 @@ jobs:
           haxelib install tjson 1.4.0 --always
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
+          
+          # 2. SScript 6.1.80 설치 (Tea 타입 에러 해결용)
+          haxelib install SScript 6.1.80 --always
 
-          # 2. 필터링 우회용 주소 조립 설치
+          # 3. 필터링 우회용 Git 라이브러리 설치
           D="github.com"
           
-          # FlxAnimate
+          # FlxAnimate (Haxe 4.2.5 호환 버전)
           U1="ShadowMario/FlxAnimate.git"
           git clone --depth 1 https://$D/$U1 /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # Android Tools
+          # Android Tools (android.Tools 패키지 경로 유지 버전)
           U2="MAJigsaw77/extension-androidtools.git"
           git clone --depth 1 https://$D/$U2 /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
@@ -79,19 +81,12 @@ jobs:
           git clone --depth 1 https://$D/$U4 /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
 
-          # Orientation
-          U5="HaxeExtension/extension-orientation.git"
-          git clone --depth 1 https://$D/$U5 /home/runner/haxelib/ext_or
+          # Orientation, Dialogs, Language
+          git clone --depth 1 https://$D/HaxeExtension/extension-orientation.git /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
-
-          # AndroidDialogs
-          U6="beihu235/AndroidDialogs.git"
-          git clone --depth 1 https://$D/$U6 /home/runner/haxelib/androiddialogs
+          git clone --depth 1 https://$D/beihu235/AndroidDialogs.git /home/runner/haxelib/androiddialogs
           haxelib dev androiddialogs /home/runner/haxelib/androiddialogs
-
-          # devicelanguage
-          U7="beihu235/devicelanguage.git"
-          git clone --depth 1 https://$D/$U7 /home/runner/haxelib/devicelanguage
+          git clone --depth 1 https://$D/beihu235/devicelanguage.git /home/runner/haxelib/devicelanguage
           haxelib dev devicelanguage /home/runner/haxelib/devicelanguage
 
           haxelib list
