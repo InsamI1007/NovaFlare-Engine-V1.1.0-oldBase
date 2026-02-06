@@ -62,7 +62,7 @@ jobs:
           haxelib install flixel-addons 3.0.2
           haxelib install tjson 1.4.0
           haxelib install hxCodec 2.6.0
-          haxelib install SScript 7.7.0
+          haxelib install SScript 7.9.0
           haxelib install hscript 2.5.0
           haxelib install hxCodec 2.6.0
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
