@@ -54,7 +54,7 @@ jobs:
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
           haxelib install hxcpp-debug-server
-          haxelib git lime https://github.com 7.9.0
+          haxelib git lime https://github.com.git 7.9.0
           haxelib install lime-samples
           haxelib git openfl https://github.com 9.1.0
           haxelib install flixel 5.6.2
