@@ -42,11 +42,9 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 검증된 서버 직접 설치 (Lime 7.9.0, SScript 3.0.0)
+          # 1. 핵심 엔진 라이브러리 (버전 고정)
           haxelib install lime 7.9.0 --always
           haxelib install SScript 3.0.0 --always
-
-          # 2. 필수 라이브러리 설치
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
           haxelib install flixel-tools 1.5.1 --always
@@ -59,21 +57,23 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
 
-          # 3. 모든 Git 라이브러리를 안전한 방식으로 클론 및 연결
-          # 주소 잘림 방지를 위해 변수를 사용하여 조립합니다.
+          # 2. Git 라이브러리 (Haxe 4.2.5 문법 및 Novaflare 호환 버전)
           GH="https://github.com"
-          
+
+          # FlxAnimate: Unexpected ? 에러 방지를 위해 1.2.0 버전으로 고정
+          git clone --depth 1 --branch 1.2.0 "$GH/dotware64/FlxAnimate.git" /home/runner/haxelib/flxanimate
+          haxelib dev flxanimate /home/runner/haxelib/flxanimate
+
+          # Android Tools: android.Tools 못 찾는 에러 방지용
+          git clone --depth 1 "$GH/MAJigsaw77/extension-androidtools.git" /home/runner/haxelib/ext_at
+          haxelib dev extension-androidtools /home/runner/haxelib/ext_at
+
+          # 나머지 라이브ari들
           git clone --depth 1 "$GH/MAJigsaw77/hxdiscord_rpc.git" /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
-          git clone --depth 1 "$GH/beihu235/flxanimate.git" /home/runner/haxelib/flxanimate
-          haxelib dev flxanimate /home/runner/haxelib/flxanimate
-
           git clone --depth 1 "$GH/superpowers04/linc_luajit.git" /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
-
-          git clone --depth 1 "$GH/MAJigsaw77/extension-androidtools.git" /home/runner/haxelib/ext_at
-          haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
           git clone --depth 1 "$GH/HaxeExtension/extension-orientation.git" /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
