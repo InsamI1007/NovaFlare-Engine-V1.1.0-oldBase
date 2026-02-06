@@ -76,16 +76,16 @@ jobs:
           haxelib git devicelanguage https://github.com/beihu235/devicelanguage
           haxelib list         
           
-          - name: Install Libraries
-           run: | 
-             haxelib git SScript https://github.com
-             haxelib git lime https://github.com 7.9.0
-             haxelib git openfl https://github.com 9.1.0
-             haxelib git extension-androidtools https://github.com
-             haxelib install hxcpp
-             haxelib install lime-samples
-             haxelib run lime setup
-             haxelib run lime setup android
+      - name: Install Libraries
+        run: | 
+          haxelib git SScript https://github.com
+          haxelib git lime https://github.com 7.9.0
+          haxelib git openfl https://github.com 9.1.0
+          haxelib git extension-androidtools https://github.com
+          haxelib install hxcpp
+          haxelib install lime-samples
+          haxelib run lime setup
+          haxelib run lime setup android
 
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
