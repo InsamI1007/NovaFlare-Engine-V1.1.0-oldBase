@@ -38,25 +38,23 @@ jobs:
         with:
           haxe-version: 4.2.5
 
-      
-
       - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
           
-          # URL을 조립하여 필터링 우회
-          DOMAIN="github.com"
-          LIME_PATH="haxelime/lime.git"
-          FULL_URL="https://${DOMAIN}/${LIME_PATH}"
-          
-          echo "Attempting to clone from: ${FULL_URL}"
-          git clone --depth=1 --branch=7.9.0 "${FULL_URL}" /home/runner/haxelib/lime_src
+          # Lime 7.9.0 태그로 직접 클론 (브랜치 대신 태그 명시)
+          LIME_REPO="https://github.com/haxelime/lime.git"
+          echo "Cloning Lime 7.9.0 from: ${LIME_REPO}"
+          git clone --depth 1 --tags https://github.com/haxelime/lime.git /home/runner/haxelib/lime_src
+          cd /home/runner/haxelib/lime_src && git checkout tags/7.9.0 && cd /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}
           haxelib dev lime /home/runner/haxelib/lime_src
           
-          # SScript (git 프로토콜 시도)
-          git clone --depth=1 git://://github.com /home/runner/haxelib/sscript_src || git clone --depth=1 https://://github.com /home/runner/haxelib/sscript_src
+          # SScript 아카이브
+          SSCRIPT_REPO="https://github.com"
+          git clone --depth 1 "${SSCRIPT_REPO}" /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
+          # 나머지 라이브러리 설치 (안정적인 버전들)
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.6.2 --always
           haxelib install flixel-tools 1.5.1 --always
@@ -69,13 +67,11 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
           
-          # 나머지 라이브러리들 (haxelib git 대신 git clone 후 dev 연결 권장)
-          git clone --depth=1 https://github.com /home/runner/haxelib/ext_at
-          haxelib dev extension-androidtools /home/runner/haxelib/ext_at
-          
+          # 기타 Git 라이브러리 (haxelib git 명령어로 복구)
           haxelib git hxdiscord_rpc https://github.com
           haxelib git flxanimate https://github.com
           haxelib git linc_luajit https://github.com
+          haxelib git extension-androidtools https://github.com
           haxelib git extension-orientation https://github.com
           haxelib git androiddialogs https://github.com
           haxelib git devicelanguage https://github.com
