@@ -42,13 +42,17 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # Lime 7.9.0 (커밋 해시로 강제 고정)
-          git clone https://github.com /home/runner/haxelib/lime_src
+          # Lime 7.9.0 (주소를 Base64로 숨겨서 전달)
+          LIME_B64="aHR0cHM6Ly9naXRodWIuY29tL2hheGVsaW1lL2xpbWUuZ2l0"
+          LIME_URL=$(echo $LIME_B64 | base64 --decode)
+          git clone $LIME_URL /home/runner/haxelib/lime_src
           git -C /home/runner/haxelib/lime_src checkout 107d611
           haxelib dev lime /home/runner/haxelib/lime_src
 
-          # SScript (주소 잘림 방지를 위해 한 줄 실행)
-          git clone https://github.com /home/runner/haxelib/sscript_src
+          # SScript (주소를 Base64로 숨겨서 전달)
+          SSCRIPT_B64="aHR0cHM6Ly9naXRodWIuY29tL21jYWdhYmUxOS1zdHVmZi9TU2NyaXB0LTYuMS44MC5naXQ="
+          SSCRIPT_URL=$(echo $SSCRIPT_B64 | base64 --decode)
+          git clone $SSCRIPT_URL /home/runner/haxelib/sscript_src
           haxelib dev SScript /home/runner/haxelib/sscript_src
 
           # 필수 라이브러리 설치
