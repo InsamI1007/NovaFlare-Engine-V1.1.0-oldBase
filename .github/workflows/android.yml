@@ -38,11 +38,11 @@ jobs:
         with:
           haxe-version: 4.2.5
 
-      - name: Install Haxelib
+            - name: Install Haxelib
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 서버 직접 설치 (성공 확인됨)
+          # 1. 검증된 서버 설치
           haxelib install lime 7.9.0 --always
           haxelib install SScript 3.0.0 --always
           haxelib install openfl 9.1.0 --always
@@ -56,29 +56,31 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
 
-          # 2. Git 라이브러리 (인증 토큰을 삽입하여 Username 요구 차단)
-          # GITHUB_TOKEN을 주소에 포함하면 비밀번호를 묻지 않습니다.
-          TOKEN_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com"
-
-          git clone --depth 1 --branch 1.2.0 "${TOKEN_URL}/dotware64/FlxAnimate.git" /home/runner/haxelib/flxanimate
+          # 2. Git 라이브러리 (정확한 주소로 수정)
+          # FlxAnimate: dotware64 대신 ShadowMario(PsychEngine) 공식 아카이브 사용
+          git clone --depth 1 https://github.com /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          git clone --depth 1 "${TOKEN_URL}/MAJigsaw77/extension-androidtools.git" /home/runner/haxelib/ext_at
+          # extension-androidtools: MAJigsaw77의 최신 주소 사용
+          git clone --depth 1 https://github.com /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
-          git clone --depth 1 "${TOKEN_URL}/MAJigsaw77/hxdiscord_rpc.git" /home/runner/haxelib/hxdiscord_rpc
+          # hxdiscord_rpc
+          git clone --depth 1 https://github.com /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
-          git clone --depth 1 "${TOKEN_URL}/superpowers04/linc_luajit.git" /home/runner/haxelib/linc_luajit
+          # linc_luajit
+          git clone --depth 1 https://github.com /home/runner/haxelib/linc_luajit
           haxelib dev linc_luajit /home/runner/haxelib/linc_luajit
 
-          git clone --depth 1 "${TOKEN_URL}/HaxeExtension/extension-orientation.git" /home/runner/haxelib/ext_or
+          # 나머지 유틸리티
+          git clone --depth 1 https://github.com /home/runner/haxelib/ext_or
           haxelib dev extension-orientation /home/runner/haxelib/ext_or
 
-          git clone --depth 1 "${TOKEN_URL}/beihu235/AndroidDialogs.git" /home/runner/haxelib/androiddialogs
+          git clone --depth 1 https://github.com /home/runner/haxelib/androiddialogs
           haxelib dev androiddialogs /home/runner/haxelib/androiddialogs
 
-          git clone --depth 1 "${TOKEN_URL}/beihu235/devicelanguage.git" /home/runner/haxelib/devicelanguage
+          git clone --depth 1 https://github.com /home/runner/haxelib/devicelanguage
           haxelib dev devicelanguage /home/runner/haxelib/devicelanguage
 
           haxelib list
