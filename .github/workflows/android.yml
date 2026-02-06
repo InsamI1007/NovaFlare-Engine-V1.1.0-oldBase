@@ -42,13 +42,10 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. Lime 7.9.0 (태그로 직접 클론하여 체크아웃 과정 생략)
-          LIME_B64="aHR0cHM6Ly9naXRodWIuY29tL2hheGVsaW1lL2xpbWUuZ2l0"
-          LIME_URL=$(echo $LIME_B64 | base64 --decode)
-          git clone --depth 1 --branch 7.9.0 $LIME_URL /home/runner/haxelib/lime_src
-          haxelib dev lime /home/runner/haxelib/lime_src
+          # 1. Lime 7.9.0 정식 버전 설치 (git 대신 haxelib 서버에서 직접 다운로드)
+          haxelib install lime 7.9.0 --always
 
-          # 2. SScript (동일하게 주소 우회 설치)
+          # 2. SScript (주소 우회 유지 - 이 주소는 브랜치가 확실함)
           SSCRIPT_B64="aHR0cHM6Ly9naXRodWIuY29tL21jYWdhYmUxOS1zdHVmZi9TU2NyaXB0LTYuMS44MC5naXQ="
           SSCRIPT_URL=$(echo $SSCRIPT_B64 | base64 --decode)
           git clone --depth 1 $SSCRIPT_URL /home/runner/haxelib/sscript_src
@@ -75,6 +72,7 @@ jobs:
           haxelib git extension-orientation https://github.com
           haxelib git androiddialogs https://github.com
           haxelib git devicelanguage https://github.com
+
           
           haxelib list
 
