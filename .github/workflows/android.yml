@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 핵심 엔진 라이브러리 (버전 고정)
+          # 1. 핵심 엔진 라이브러리 (검증된 서버 설치)
           haxelib install lime 7.9.0 --always
           haxelib install SScript 3.0.0 --always
           haxelib install openfl 9.1.0 --always
@@ -57,20 +57,17 @@ jobs:
           haxelib install hscript 2.5.0 --always
           haxelib install lime-samples --always
 
-          # 2. Git 라이브러리 (필터링 우회를 위해 주소 조립)
-          GH="https://github.com"
-
-          # FlxAnimate: 주소를 쪼개서 인증 오류 회피
-          ANIMATE_PATH="dotware64/FlxAnimate.git"
-          git clone --depth 1 --branch 1.2.0 "$GH/$ANIMATE_PATH" /home/runner/haxelib/flxanimate
+          # 2. Git 라이브러리 설치
+          # FlxAnimate (GitHub 주소를 직접 사용)
+          git clone --depth 1 --branch 1.2.0 https://github.com /home/runner/haxelib/flxanimate
           haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # Android Tools: 주소를 쪼개서 인증 오류 회피
-          AT_PATH="MAJigsaw77/extension-androidtools.git"
-          git clone --depth 1 "$GH/$AT_PATH" /home/runner/haxelib/ext_at
+          # Android Tools (GitHub 주소를 직접 사용)
+          git clone --depth 1 https://github.com /home/runner/haxelib/ext_at
           haxelib dev extension-androidtools /home/runner/haxelib/ext_at
 
-          # 나머지 라이브러리들도 안전하게 클론
+          # 나머지 라이브러리 (변수 조립 방식 유지)
+          GH="https://github.com"
           git clone --depth 1 "$GH/MAJigsaw77/hxdiscord_rpc.git" /home/runner/haxelib/hxdiscord_rpc
           haxelib dev hxdiscord_rpc /home/runner/haxelib/hxdiscord_rpc
 
