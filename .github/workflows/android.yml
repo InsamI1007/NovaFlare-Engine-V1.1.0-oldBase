@@ -65,7 +65,7 @@ jobs:
           haxelib install SScript 22.0.2
           haxelib install hscript 2.5.0
           haxelib install hxCodec 2.6.0
-          haxelib install TeaScript 0.16.0
+          haxelib install TeaScript 1.0.1
 
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
           haxelib git flxanimate https://github.com/beihu235/flxanimate
