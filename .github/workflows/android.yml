@@ -62,7 +62,7 @@ jobs:
           haxelib install flixel-addons 3.0.2
           haxelib install tjson 1.4.0
           haxelib install hxCodec 2.6.0
-          haxelib install SScript 8.0.0
+          haxelib install SScript 22.0.2
           haxelib install hscript 2.5.0
           haxelib install hxCodec 2.6.0
           haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
@@ -74,11 +74,6 @@ jobs:
           haxelib git devicelanguage https://github.com/beihu235/devicelanguage
           haxelib list         
           
-          - name: Install SScript (Fixed Archive)
-            run:  haxelib remove SScript || true
-            haxelib git SScript https://github.com
-
-
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
 
