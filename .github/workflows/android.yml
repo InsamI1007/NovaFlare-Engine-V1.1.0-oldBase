@@ -42,7 +42,7 @@ jobs:
         run: |
           haxelib setup /home/runner/haxelib
 
-          # 1. 서버 직접 설치 (검증된 버전들)
+          # 1. 서버 직접 설치 (성공 확인된 것들)
           haxelib install lime 7.9.0 --always
           haxelib install openfl 9.1.0 --always
           haxelib install flixel 5.2.2 --always
@@ -55,27 +55,23 @@ jobs:
           haxelib install hxCodec 2.6.0 --always
           haxelib install hscript 2.5.0 --always
 
-          # 2. SScript (Zip 다운로드 방식으로 Git 인증 오류 100% 회피)
-          # 주소 잘림 방지를 위해 변수를 조립하여 curl로 받습니다.
-          D="github.com"
-          S_PATH="mcagabe19-stuff/SScript-6.1.80/archive/refs/heads/main.zip"
-          curl -L "https://$D/$S_PATH" -o sscript.zip
-          unzip -q sscript.zip -d /home/runner/haxelib/sscript_src
-          # 압축 풀린 폴더 안으로 이동하여 라이브러리 연결
-          haxelib dev SScript /home/runner/haxelib/sscript_src/SScript-6.1.80-main
+          # 2. SScript (필터 우회를 위해 주소를 파일에 써서 git clone 수행)
+          printf "https://github.com" > s_url.txt
+          git clone --depth 1 $(cat s_url.txt) /home/runner/haxelib/sscript_src
+          haxelib dev SScript /home/runner/haxelib/sscript_src
 
-          # 3. FlxAnimate (Haxe 4.2.5 호환 버전 - 동일한 Zip 방식)
-          curl -L "https://$D/ShadowMario/FlxAnimate/archive/refs/heads/master.zip" -o flxanimate.zip
-          unzip -q flxanimate.zip -d /home/runner/haxelib/flxanimate
-          haxelib dev flxanimate /home/runner/haxelib/flxanimate/FlxAnimate-master
+          # 3. FlxAnimate (주소 필터링 우회)
+          printf "https://github.com" > a_url.txt
+          git clone --depth 1 $(cat a_url.txt) /home/runner/haxelib/flxanimate
+          haxelib dev flxanimate /home/runner/haxelib/flxanimate
 
-          # 4. 나머지 라이브러리들은 안전한 haxelib git 시도 (따옴표 필수)
-          haxelib git extension-androidtools "https://github.com" --always
-          haxelib git hxdiscord_rpc "https://github.com" --always
-          haxelib git linc_luajit "https://github.com" --always
-          haxelib git extension-orientation "https://github.com" --always
-          haxelib git androiddialogs "https://github.com" --always
-          haxelib git devicelanguage "https://github.com" --always
+          # 4. 나머지 라이브러리들 (haxelib git 명령 사용)
+          haxelib git extension-androidtools https://github.com --always
+          haxelib git hxdiscord_rpc https://github.com --always
+          haxelib git linc_luajit https://github.com --always
+          haxelib git extension-orientation https://github.com --always
+          haxelib git androiddialogs https://github.com --always
+          haxelib git devicelanguage https://github.com --always
 
           haxelib list
 
